@@ -9,6 +9,7 @@
 #include "Components/InputComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
+#include "Components/SCGInteractComponent.h"
 
 ASCGPlayerCharacter::ASCGPlayerCharacter()
 {
@@ -21,18 +22,33 @@ ASCGPlayerCharacter::ASCGPlayerCharacter()
     FollowCamera->SetupAttachment(CameraBoom);
     GetCharacterMovement()->bOrientRotationToMovement = true;
     bUseControllerRotationYaw = false;
+    InteractComponent = CreateDefaultSubobject<USCGInteractComponent>(TEXT("InteractComponent"));
+}
+
+void ASCGPlayerCharacter::LookActor(ASCGInteractObject* ActorInteracted)
+{
+    InteractComponent->StartInteract(ActorInteracted);
+    UE_LOG(LogTemp, Warning, TEXT("LookOnObject"));
+}
+
+void ASCGPlayerCharacter::LeaveActor()
+{
+    InteractComponent->StopInteract();
+    UE_LOG(LogTemp, Warning, TEXT("LeaveFromObject"));
 }
 
 void ASCGPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
-    check(MoveAction);
-    check(LookAction);
+    check(ActionMove);
+    check(ActionLook);
+    check(ActionInteract);
 
     if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
     {
-        EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASCGPlayerCharacter::Move);
-        EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASCGPlayerCharacter::Look);
+        EnhancedInputComponent->BindAction(ActionMove, ETriggerEvent::Triggered, this, &ASCGPlayerCharacter::Move);
+        EnhancedInputComponent->BindAction(ActionLook, ETriggerEvent::Triggered, this, &ASCGPlayerCharacter::Look);
+        EnhancedInputComponent->BindAction(ActionInteract, ETriggerEvent::Started, this, &ASCGPlayerCharacter::Interact);
     }
 }
 
@@ -54,4 +70,9 @@ void ASCGPlayerCharacter::Look(const FInputActionValue& Value)
     FVector2D LookVector = Value.Get<FVector2D>();
     AddControllerYawInput(LookVector.X);
     AddControllerPitchInput(LookVector.Y);
+}
+
+void ASCGPlayerCharacter::Interact()
+{
+    InteractComponent->Interact();
 }

@@ -18,7 +18,4 @@ protected:
     TSubclassOf<USCGGameHUDWidget> ClassGameHUDWidget;
 
     virtual void BeginPlay() override;
-
-    FTimerHandle Timer;
-    void Test();
 };
