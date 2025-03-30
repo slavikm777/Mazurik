@@ -19,6 +19,19 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
     UStaticMeshComponent* MeshMovable;
 
+    UPROPERTY(EditDefaultsOnly, Category = "Settings")
+    FText InteractText2;
+
+    virtual FText GetInteractText() override;
+
+    UFUNCTION(BlueprintNativeEvent)
+    void PlayAnimEvent(bool Open);
+
+    void PlayAnim(bool Open = true);
+
+    UFUNCTION(BlueprintCallable)
+    void FinishAnim();
+
 private:
     UPROPERTY(EditAnywhere, Category = "Settings")
     bool IsOpen = false;

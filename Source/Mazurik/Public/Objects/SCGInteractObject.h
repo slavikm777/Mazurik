@@ -7,7 +7,6 @@
 #include "SCGInteractObject.generated.h"
 
 class UStaticMeshComponent;
-// class UStaticMesh;
 class USphereComponent;
 class ISCGInteractInterface;
 class USCGWidgetComponent;
@@ -36,17 +35,14 @@ protected:
     USCGWidgetComponent* WidgetInteract;
 
     UPROPERTY(EditDefaultsOnly, Category = "Settings")
-    FString Name;
+    FText Name;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Settings")
+    FText InteractText;
 
     bool CanAction = true;
 
     ISCGInteractInterface* InteractInterface;
-
-    UFUNCTION(BlueprintNativeEvent)
-    void PlayAnimEvent(bool Open);
-
-    UFUNCTION(BlueprintCallable)
-    void FinishAnim();
 
     UFUNCTION()
     virtual void OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -55,5 +51,6 @@ protected:
     UFUNCTION()
     virtual void OverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                             UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-    void PlayAnim(bool Open = true);
+    virtual void BeginPlay() override;
+    virtual FText GetInteractText() { return InteractText; }
 };

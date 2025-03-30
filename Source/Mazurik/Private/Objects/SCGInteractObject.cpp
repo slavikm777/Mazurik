@@ -23,16 +23,6 @@ ASCGInteractObject::ASCGInteractObject()
     SphereComponent->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OverlapEnd);
 }
 
-void ASCGInteractObject::PlayAnimEvent_Implementation(bool Open)
-{
-    
-}
-
-void ASCGInteractObject::FinishAnim()
-{
-    CanAction = true;
-}
-
 void ASCGInteractObject::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                       const FHitResult& SweepResult)
@@ -54,9 +44,9 @@ void ASCGInteractObject::OverlapEnd(UPrimitiveComponent* OverlappedComponent, AA
     WidgetInteract->ToggleWidgetInteraction(false);
 }
 
-void ASCGInteractObject::PlayAnim(bool Open)
+void ASCGInteractObject::BeginPlay()
 {
-    CanAction = false;
-    UE_LOG(LogTemp, Warning, TEXT("Implementation false"));
-    PlayAnimEvent(Open);
+    Super::BeginPlay();
+    WidgetInteract->SetInteractText(GetInteractText());
+    WidgetInteract->SetObjectName(Name);
 }

@@ -15,15 +15,12 @@ class MAZURIK_API USCGWidgetComponent final : public UWidgetComponent
 	GENERATED_BODY()
 
 public:
+	FText ObjectName, InteractText;
 	void ToggleWidgetInteraction(bool ShowWidget);
+	void SetInteractText(FText InText);
+	void SetObjectName(FText InText);
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Settings")
-	FText ObjectName;
-
-	UPROPERTY(EditAnywhere, Category = "Settings")
-	FText InteractText;
-
 	virtual void BeginPlay() override;
 
 private:

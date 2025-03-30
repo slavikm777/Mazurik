@@ -1,6 +1,6 @@
 // Mazurik V.V project
 
-#include "SCGPlayerCharacter.h"
+#include "Character/SCGPlayerCharacter.h"
 
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
