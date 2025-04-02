@@ -7,6 +7,7 @@
 #include "SCGInteractComponent.generated.h"
 
 class ASCGInteractObject;
+class ISCGLockDoorInterface;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class MAZURIK_API USCGInteractComponent : public UActorComponent
@@ -16,9 +17,11 @@ class MAZURIK_API USCGInteractComponent : public UActorComponent
 public:
     void StartInteract(ASCGInteractObject* InInteractObject);
     void StopInteract();
-    void Interact();
+    void Interact(TArray<FName> Keys) const;
 
 private:
     UPROPERTY()
     ASCGInteractObject* InteractObject;
+
+    ISCGLockDoorInterface* LockDoorInterface;
 };

@@ -37,6 +37,14 @@ void ASCGPlayerCharacter::LeaveActor()
     UE_LOG(LogTemp, Warning, TEXT("LeaveFromObject"));
 }
 
+void ASCGPlayerCharacter::TakeKey(FName KeyRowName)
+{
+    if (KeyRowName.IsValid())
+    {
+        KeysArray.AddUnique(KeyRowName);
+    }
+}
+
 void ASCGPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -48,7 +56,8 @@ void ASCGPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
     {
         EnhancedInputComponent->BindAction(ActionMove, ETriggerEvent::Triggered, this, &ASCGPlayerCharacter::Move);
         EnhancedInputComponent->BindAction(ActionLook, ETriggerEvent::Triggered, this, &ASCGPlayerCharacter::Look);
-        EnhancedInputComponent->BindAction(ActionInteract, ETriggerEvent::Started, this, &ASCGPlayerCharacter::Interact);
+        EnhancedInputComponent->BindAction(ActionInteract, ETriggerEvent::Started, this,
+                                           &ASCGPlayerCharacter::Interact);
     }
 }
 
@@ -57,9 +66,9 @@ void ASCGPlayerCharacter::Move(const FInputActionValue& Value)
     check(GetController());
     FVector2D MovementVector = Value.Get<FVector2D>();
     const FRotator Rotation = GetController()->GetControlRotation();
-    const FRotator YawRotation{ 0.0f, Rotation.Yaw, 0.0f };
-    const FVector ForwardDirection{ FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X) };
-    const FVector RightDirection{ FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y) };
+    const FRotator YawRotation{0.0f, Rotation.Yaw, 0.0f};
+    const FVector ForwardDirection{FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X)};
+    const FVector RightDirection{FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y)};
     AddMovementInput(ForwardDirection, MovementVector.Y);
     AddMovementInput(RightDirection, MovementVector.X);
 }
@@ -72,7 +81,12 @@ void ASCGPlayerCharacter::Look(const FInputActionValue& Value)
     AddControllerPitchInput(LookVector.Y);
 }
 
+void ASCGPlayerCharacter::ApplyKeys() //Временный колхоз
+{
+    for (FName Key : KeysArray){}
+}
+
 void ASCGPlayerCharacter::Interact()
 {
-    InteractComponent->Interact();
+    InteractComponent->Interact(KeysArray);
 }

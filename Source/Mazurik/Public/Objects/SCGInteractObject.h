@@ -19,10 +19,7 @@ class MAZURIK_API ASCGInteractObject : public AActor
 public:
     ASCGInteractObject();
 
-    virtual void StartTheAction() 
-    {
-        UE_LOG(LogTemp, Warning, TEXT("InteractWithActor"));
-    };
+    virtual bool StartTheAction();
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category = "Components")

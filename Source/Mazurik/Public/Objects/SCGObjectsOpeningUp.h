@@ -13,7 +13,8 @@ class MAZURIK_API ASCGObjectsOpeningUp : public ASCGInteractObject
 
 public:
     ASCGObjectsOpeningUp();
-    virtual void StartTheAction() override;
+    virtual bool StartTheAction() override;
+    virtual void OnConstruction(const FTransform& Transform) override;
 
 protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
@@ -22,12 +23,20 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Settings")
     FText InteractText2;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings")
+    FTransform TransformOpen;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings")
+    FTransform TransformClose;
+
     virtual FText GetInteractText() override;
 
     UFUNCTION(BlueprintNativeEvent)
     void PlayAnimEvent(bool Open);
 
     void PlayAnim(bool Open = true);
+
+    bool GetOpen() { return IsOpen; }
 
     UFUNCTION(BlueprintCallable)
     void FinishAnim();

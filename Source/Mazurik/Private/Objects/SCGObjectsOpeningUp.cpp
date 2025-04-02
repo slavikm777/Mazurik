@@ -8,16 +8,30 @@ ASCGObjectsOpeningUp::ASCGObjectsOpeningUp()
     MeshMovable = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshMovable"));
     check(MeshMovable);
     MeshMovable->SetupAttachment(RootComponent);
+    MeshMovable->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     check(WidgetInteract);
 }
 
-void ASCGObjectsOpeningUp::StartTheAction()
+bool ASCGObjectsOpeningUp::StartTheAction()
 {
+    Super::StartTheAction();
     if (CanAction)
         if (IsOpen)
             Close();
         else
             Open();
+    return true;
+}
+
+void ASCGObjectsOpeningUp::OnConstruction(const FTransform& Transform)
+{
+    Super::OnConstruction(Transform);
+    if (MeshMovable)
+    {
+        if (IsOpen)
+            MeshMovable->SetRelativeTransform(TransformOpen);
+        else MeshMovable->SetRelativeTransform(TransformClose);
+    }
 }
 
 FText ASCGObjectsOpeningUp::GetInteractText()
@@ -47,13 +61,13 @@ void ASCGObjectsOpeningUp::PlayAnimEvent_Implementation(bool Open)
 void ASCGObjectsOpeningUp::Open()
 {
     PlayAnim();
-    IsOpen = true; // В будущем сделать таймер или делегат
+    IsOpen = true; 
     WidgetInteract->SetInteractText(GetInteractText());
 }
 
 void ASCGObjectsOpeningUp::Close()
 {
     PlayAnim(false);
-    IsOpen = false; // В будущем сделать таймер или делегат
+    IsOpen = false;
     WidgetInteract->SetInteractText(GetInteractText());
 }

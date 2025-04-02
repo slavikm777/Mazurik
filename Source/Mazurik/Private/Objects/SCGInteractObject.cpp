@@ -23,6 +23,12 @@ ASCGInteractObject::ASCGInteractObject()
     SphereComponent->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OverlapEnd);
 }
 
+bool ASCGInteractObject::StartTheAction()
+{
+    UE_LOG(LogTemp, Warning, TEXT("InteractWithActor"));
+    return true;
+}
+
 void ASCGInteractObject::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                       const FHitResult& SweepResult)

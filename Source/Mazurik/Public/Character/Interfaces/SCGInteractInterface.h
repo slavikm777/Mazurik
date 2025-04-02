@@ -20,4 +20,5 @@ class MAZURIK_API ISCGInteractInterface
 public:
     virtual void LookActor(ASCGInteractObject* ActorInteracted) = 0;
     virtual void LeaveActor() = 0;
+    virtual void TakeKey(FName KeyRowName) = 0;
 };

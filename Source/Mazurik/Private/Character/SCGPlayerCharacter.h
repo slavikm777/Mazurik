@@ -23,6 +23,7 @@ public:
     ASCGPlayerCharacter();
     virtual void LookActor(ASCGInteractObject* ActorInteracted) override;
     virtual void LeaveActor() override;
+    virtual void TakeKey(FName KeyRowName) override;
 
 private:
     UPROPERTY(EditDefaultsOnly, Category = "Components")
@@ -39,9 +40,12 @@ private:
     UPROPERTY(EditDefaultsOnly, Category = "Settings | Input")
     UInputAction* ActionInteract;
 
+    TArray<FName> KeysArray;
+
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
     void Move(const FInputActionValue& Value);
     void Look(const FInputActionValue& Value);
     void Interact();
+    void ApplyKeys();
 };
